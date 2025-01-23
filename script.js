@@ -15,7 +15,7 @@ document.getElementById('downloadButton').addEventListener('click', () => {
   }
 
   // Proceed with API call if URL is valid
-  fetch(https://your-backend-url.com/download?url=${encodeURIComponent(url)})
+  fetch(`https://your-backend-url.com/download?url=${encodeURIComponent(url)}`)
     .then(response => response.json())
     .then(data => {
       if (data.success) {
@@ -24,6 +24,13 @@ document.getElementById('downloadButton').addEventListener('click', () => {
         videoElement.controls = true;
         document.getElementById('output').innerHTML = "";
         document.getElementById('output').appendChild(videoElement);
+        
+        // Create a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = data.downloadLink;
+        downloadLink.download = "downloaded_video";
+        downloadLink.innerText = "Click here to download";
+        document.getElementById('output').appendChild(downloadLink);
       } else {
         document.getElementById('output').innerHTML = "<p>Failed to fetch video. Please check the URL.</p>";
       }
