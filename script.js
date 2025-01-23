@@ -1,8 +1,8 @@
 document.getElementById('downloadButton').addEventListener('click', () => {
   const url = document.getElementById('urlInput').value.trim();
 
-  // Instagram URL validation (basic check for 'instagram.com')
-  const regex = /^https?:\/\/(www\.)?instagram\.com\/(?:p\/[A-Za-z0-9_-]+\/?)$/;
+  // Instagram Video URL validation (checks for posts with videos)
+  const regex = /^https?:\/\/(www\.)?instagram\.com\/p\/[A-Za-z0-9_-]+\/?$/;
 
   if (!url) {
     alert("Please enter a valid Instagram URL!");
@@ -25,12 +25,14 @@ document.getElementById('downloadButton').addEventListener('click', () => {
         document.getElementById('output').innerHTML = "";
         document.getElementById('output').appendChild(videoElement);
         
-        // Create a download link
+        // Create a download link and trigger it automatically
         const downloadLink = document.createElement('a');
         downloadLink.href = data.downloadLink;
         downloadLink.download = "downloaded_video";
-        downloadLink.innerText = "Click here to download";
-        document.getElementById('output').appendChild(downloadLink);
+        downloadLink.style.display = 'none'; // Hide the link
+        document.body.appendChild(downloadLink); // Append the link to body
+        downloadLink.click(); // Automatically click the link to start downloading
+        document.body.removeChild(downloadLink); // Remove the link after download starts
       } else {
         document.getElementById('output').innerHTML = "<p>Failed to fetch video. Please check the URL.</p>";
       }
