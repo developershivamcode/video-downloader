@@ -12,7 +12,7 @@
     <p>Download your favorite Instagram videos, reels, and stories easily!</p>
 
     <div class="input-section">
-      <input type="text" id="urlInput" placeholder="Paste Instagram URL here" />
+      <input type="text" id="urlInput" placeholder="Paste Instagram URL here" value="https://www.instagram.com/p/CXyABt8i2Mk/" />
       <button id="downloadButton">Download</button>
     </div>
 
@@ -20,6 +20,26 @@
       <p>Enter a valid Instagram URL to preview and download.</p>
     </div>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    document.getElementById('downloadButton').addEventListener('click', function() {
+      const url = document.getElementById('urlInput').value;
+      const output = document.getElementById('output');
+      
+      // Regular expression to check for a valid Instagram post URL
+      const instagramURLPattern = /^(https:\/\/www\.instagram\.com\/p\/[a-zA-Z0-9_-]+\/)$/;
+
+      if(instagramURLPattern.test(url)) {
+        // If the URL is valid, display a message and add download link
+        output.innerHTML = `
+          <p>Valid Instagram URL detected!</p>
+          <a href="${url}" target="_blank" class="download-link">Download the content</a>
+        `;
+      } else {
+        // If the URL is invalid, show an error message
+        output.innerHTML = '<p>Please enter a valid Instagram post URL.</p>';
+      }
+    });
+  </script>
 </body>
 </html>
