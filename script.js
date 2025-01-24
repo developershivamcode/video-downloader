@@ -4,7 +4,7 @@ document.getElementById('downloadButton').addEventListener('click', () => {
   // Updated Regex
   const regex = /^https?:\/\/(www\.)?instagram\.com\/(p|reel|tv)\/[A-Za-z0-9_-]+\/?$/;
 
-  console.log("URL entered by user:", url);
+  console.log("Entered URL:", url); // Debugging log
 
   if (!url) {
     alert("Please enter a valid Instagram URL!");
@@ -12,7 +12,7 @@ document.getElementById('downloadButton').addEventListener('click', () => {
   }
 
   if (!regex.test(url)) {
-    console.log("Invalid URL entered:", url);
+    console.log("Invalid URL entered:", url); // Debugging log
     alert("Invalid Instagram URL! Please enter a valid post URL.");
     return;
   }
@@ -28,7 +28,7 @@ document.getElementById('downloadButton').addEventListener('click', () => {
       return response.json();
     })
     .then(data => {
-      console.log("API Response:", data);
+      console.log("API Response:", data); // Debugging log
 
       if (data.success) {
         const videoElement = document.createElement('video');
