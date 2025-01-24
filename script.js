@@ -1,8 +1,10 @@
 document.getElementById('downloadButton').addEventListener('click', () => {
   const url = document.getElementById('urlInput').value.trim();
 
-  // Instagram Video URL validation (checks for posts with videos)
-  const regex = /^https?:\/\/(www\.)?instagram\.com\/p\/[A-Za-z0-9_-]+\/?$/;
+  // Updated Regex
+  const regex = /^https?:\/\/(www\.)?instagram\.com\/(p|reel|tv)\/[A-Za-z0-9_-]+\/?$/;
+
+  console.log("URL entered by user:", url);
 
   if (!url) {
     alert("Please enter a valid Instagram URL!");
@@ -10,35 +12,44 @@ document.getElementById('downloadButton').addEventListener('click', () => {
   }
 
   if (!regex.test(url)) {
+    console.log("Invalid URL entered:", url);
     alert("Invalid Instagram URL! Please enter a valid post URL.");
     return;
   }
 
-  // Proceed with API call if URL is valid
+  console.log("URL is valid. Proceeding with API call...");
+
+  // Proceed with API call
   fetch(`https://your-backend-url.com/download?url=${encodeURIComponent(url)}`)
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
     .then(data => {
+      console.log("API Response:", data);
+
       if (data.success) {
         const videoElement = document.createElement('video');
         videoElement.src = data.downloadLink;
         videoElement.controls = true;
         document.getElementById('output').innerHTML = "";
         document.getElementById('output').appendChild(videoElement);
-        
-        // Create a download link and trigger it automatically
+
         const downloadLink = document.createElement('a');
         downloadLink.href = data.downloadLink;
         downloadLink.download = "downloaded_video";
-        downloadLink.style.display = 'none'; // Hide the link
-        document.body.appendChild(downloadLink); // Append the link to body
-        downloadLink.click(); // Automatically click the link to start downloading
-        document.body.removeChild(downloadLink); // Remove the link after download starts
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
       } else {
         document.getElementById('output').innerHTML = "<p>Failed to fetch video. Please check the URL.</p>";
       }
     })
     .catch(err => {
-      console.error(err);
+      console.error("Error occurred:", err);
       document.getElementById('output').innerHTML = "<p>Error fetching video. Please try again later.</p>";
     });
 });
