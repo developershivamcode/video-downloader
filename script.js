@@ -1,8 +1,8 @@
 document.getElementById('downloadButton').addEventListener('click', () => {
   const url = document.getElementById('urlInput').value.trim();
 
-  // Updated Regex
-  const regex = /^https?:\/\/(www\.)?instagram\.com\/(p|reel|tv)\/[A-Za-z0-9_-]+\/?$/;
+  // Updated Regex to handle profile, post, reel, and TV URLs
+  const regex = /^https?:\/\/(www\.)?instagram\.com\/(p|reel|tv|[A-Za-z0-9_-]+)\/?$/;
 
   console.log("Entered URL:", url); // Debugging log
 
@@ -13,7 +13,7 @@ document.getElementById('downloadButton').addEventListener('click', () => {
 
   if (!regex.test(url)) {
     console.log("Invalid URL entered:", url); // Debugging log
-    alert("Invalid Instagram URL! Please enter a valid post URL.");
+    alert("Invalid Instagram URL! Please enter a valid post or profile URL.");
     return;
   }
 
